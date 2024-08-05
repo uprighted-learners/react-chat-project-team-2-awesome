@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const Message = require("../models/Message");
+const Message = require("../Models/Message");
 
 //Displaying the messages within the room endpoint
 router.get("/:roomId", async (req, res) => {
