@@ -23,14 +23,29 @@ router.put("/:id", async (req, res) => {
   } catch (error) {
     res.status(400).send(error);
   }
-  //Deleting the message within a room endpoint
-  router.delete("/:id", async (req, res) => {
-    try {
-      await Message.findIdAndDelete(req.params.id);
-      res.send({ message: "The message is deleted" });
-    } catch (error) {
-      res.status(400).send(error);
-    }
-  });
+});
+//Deleting the message within a room endpoint
+router.delete("/:id", async (req, res) => {
+  try {
+    await Message.findOneAndDelete({ _id: req.params.id });
+    res.send({ message: "The message is deleted" });
+  } catch (error) {
+    res.status(400).send(error);
+  }
+});
+router.post("/message", async (req, res) => {
+  try {
+    // Create a new message using the data from the request body
+    const newMessage = new Message(req.body);
+    await newMessage.save();
+
+    // Send a response with the created message
+    res
+      .status(201)
+      .send({ message: "The message is created", data: newMessage });
+  } catch (error) {
+    // Handle any errors that occur during message creation
+    res.status(400).send({ error: error.message });
+  }
 });
 module.exports = router;
