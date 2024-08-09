@@ -1,10 +1,12 @@
 // consts
-
+require("dotenv").config()
 const express = require("express");
 const mongoose = require("mongoose");
 const userRoutes = require("./routes/users");
 const roomRoutes = require("./routes/rooms");
 const messageRoutes = require("./routes/messages");
+
+
 
 const app = express();
 
@@ -18,7 +20,7 @@ app.use("/messages", messageRoutes);
 
 // Database Connection
 mongoose
-  .connect("mongodb://localhost:27017/chatapp", {
+  .connect("mongodb://localhost:27017/chat-app", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
