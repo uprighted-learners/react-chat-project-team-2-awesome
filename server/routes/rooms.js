@@ -11,14 +11,14 @@ router.post("/", async (req, res) => {
   } catch (error) {
     res.status(400).send(error);
   }
+})
   //Displaying the rooms endpoints
   router.get("/", async (req, res) => {
     try {
       const rooms = await Room.find();
-      res.send(rooms);
+      res.status(200).json(rooms)
     } catch (error) {
       res.status(400).send(error);
     }
   });
-});
 module.exports = router;
