@@ -1,23 +1,23 @@
-import React, {useState} from 'react'
-import Auth from './components/Auth'
+import React, { useState } from "react";
+import Auth from "./components/Auth";
+import Room from "./components/Room";
 
 const App = () => {
- const [token, setToken] = useState(localStorage.getItem("token"));   
+  const [token, setToken] = useState("Hi" || localStorage.getItem("token"));
   return (
-    <div className='App'>
-       {!token ?(
-        <Auth setToken={setToken}/>
-       ) : (
+    <div className="App">
+      {!token ? (
+        <Auth setToken={setToken} />
+      ) : (
         <>
-        <div>
+          <div>
             <h1>Chat Room:room_name</h1>
-            {/* Adding the Room Component here */}
-        </div>
+            <Room />
+          </div>
         </>
-       )
-    }   
-        </div>
-  )
-}
+      )}
+    </div>
+  );
+};
 
-export default App
+export default App;
