@@ -6,7 +6,7 @@ const JWT = require("jsonwebtoken");
 
 //Creating the user endpoints
 
-router.post("/", async (req, res) => {
+router.post("/create", async (req, res) => {
  const saltRounds = parseInt(process.env.SALT);
   bcrypt.hash(req.body.password, saltRounds, async(err, hash) =>{
     try {
@@ -30,11 +30,13 @@ router.post("/", async (req, res) => {
   })
   
 });
-//Creating the users endpoint
+//Creating the login endpoint
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
-  if (user && user.password === password) {
+  
+
+  if (await bcrypt.compare(password, user.password)) {
     res.send(user);
   } else {
     res.status(400).send("Invalid User Login credentials");
