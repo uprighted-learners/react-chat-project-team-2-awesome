@@ -6,7 +6,7 @@ const App = () => {
   const [token, setToken] = useState("Hi" || localStorage.getItem("token"));
   return (
     <div className="App">
-      {!token ? (
+      {token ? (
         <Auth setToken={setToken} />
       ) : (
         <>

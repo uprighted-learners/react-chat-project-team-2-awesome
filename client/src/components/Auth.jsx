@@ -42,7 +42,7 @@ onChange={(e) => setPassword(e.target.value)}
 {isRegister ? 'Register': 'Login'}
 </button>
 <button onClick={() => setIsRegister(!isRegister)}>
-    {isRegister ? 'Switch to Login': 'SWitch to Register'}
+    {isRegister ? 'Switch to Login': 'Switch to Register'}
 </button>
     </div>
   )
