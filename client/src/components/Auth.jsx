@@ -3,7 +3,7 @@ import React,{useState} from 'react'
 const Auth = ({setToken}) => {
  
  const [isRegister, setIsRegister] = useState(false);
- const [email, setEmail] = useState('');
+ const [firstName, lastName, email, setEmail] = useState('');
  const [password,setPassword] = useState('') 
  
  const handleAuth = async ()  =>{
@@ -25,6 +25,18 @@ if (data.token){
  return (
     <div>
 <h2>{isRegister ? 'Register' : 'Login'}</h2>
+<input
+type="firstName"
+placeholder="First_Name"
+value={email}
+onChange={(e) => setName(e.target.value)}
+/>
+<input
+type="lastName"
+placeholder="Last_Name" 
+value={email}
+onChange={(e) => setName(e.target.value)}
+/>
 <input
 type="email"
 placeholder="Email"
