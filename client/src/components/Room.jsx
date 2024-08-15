@@ -11,7 +11,6 @@ const Room = ({ room }) => {
     const fetchMessages = async () => {
       setLoading(true);
       setError(null);
-
       try {
         const response = await fetch(
           `http://localhost:9000/rooms/${room.id}/messages`,
@@ -74,10 +73,10 @@ const Room = ({ room }) => {
         ) : error ? (
           <div>{error}</div>
         ) : (
-        messages.map((message) => (
-          <div key={message.id}>{message.content}</div>
-        ))
-      )}
+          messages.map((message) => (
+            <div key={message.id}>{message.content}</div>
+          ))
+        )}
       </div>
       <div className="message-input">
         <input
@@ -87,7 +86,7 @@ const Room = ({ room }) => {
           placeholder="Type a message..."
         />
         <button onClick={sendMessage} disabled={sending || !newMessage.trim()}>
-        {sending ? "Sending..." : "Send"}
+          {sending ? "Sending..." : "Send"}
         </button>
       </div>
     </div>
