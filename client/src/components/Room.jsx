@@ -3,9 +3,13 @@ import React, { useState, useEffect } from "react";
 const Room = ({ room }) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchMessages = async () => {
+      setLoading(true);
+      setError(null);
       try {
         const response = await fetch(
           `http://localhost:9000/rooms/${room.id}/messages`,
@@ -15,17 +19,27 @@ const Room = ({ room }) => {
             },
           }
         );
+        if (response.ok) {
+          throw new Error("Failed to fetch messages");
+        }
         const data = await response.json();
         setMessages(data.messages);
       } catch (error) {
-        console.error("Error fetching messages:", error);
+        setError(error.message);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchMessages();
-  }, [room]);
+    const intervalId = setInterval(fetchMessages, 5000);
+
+    return () => clearInterval(intervalId);
+  }, [room.id]);
 
   const sendMessage = async () => {
+    if (newMessage.trim() === "") return;
+
     try {
       const response = await fetch(
         `http://localhost:9000/rooms/${room.id}/messages`,
@@ -42,7 +56,7 @@ const Room = ({ room }) => {
       setMessages([...messages, data.message]);
       setNewMessage("");
     } catch (error) {
-      console.error("Error sending message:", error);
+      setError(error.message);
     }
   };
 
