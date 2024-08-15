@@ -5,6 +5,8 @@ const Auth = ({setToken}) => {
  const [isRegister, setIsRegister] = useState(false);
  const [email, setEmail] = useState('');
  const [password,setPassword] = useState('') 
+ const [firstName, setFirstName] = useState('')
+const [lastName, setLastName ] = useState('')
  
  const handleAuth = async ()  =>{
  const endpoint = isRegister ? '/register' : '/login' ;
@@ -25,6 +27,18 @@ if (data.token){
  return (
     <div>
 <h2>{isRegister ? 'Register' : 'Login'}</h2>
+<input
+type="texr"
+placeholder="First_Name"
+value={firstName}
+onChange={(e) => setFirstName(e.target.value)}
+/>
+<input
+type="text"
+placeholder="Last_Name" 
+value={lastName}
+onChange={(e) => setLastName(e.target.value)}
+/>
 <input
 type="email"
 placeholder="Email"
