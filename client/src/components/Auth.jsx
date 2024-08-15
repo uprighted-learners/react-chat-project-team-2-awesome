@@ -3,8 +3,10 @@ import React,{useState} from 'react'
 const Auth = ({setToken}) => {
  
  const [isRegister, setIsRegister] = useState(false);
- const [firstName, lastName, email, setEmail] = useState('');
+ const [email, setEmail] = useState('');
  const [password,setPassword] = useState('') 
+ const [firstName, setFirstName] = useState('')
+const [lastName, setLastName ] = useState('')
  
  const handleAuth = async ()  =>{
  const endpoint = isRegister ? '/register' : '/login' ;
@@ -26,16 +28,16 @@ if (data.token){
     <div>
 <h2>{isRegister ? 'Register' : 'Login'}</h2>
 <input
-type="firstName"
+type="texr"
 placeholder="First_Name"
-value={email}
-onChange={(e) => setName(e.target.value)}
+value={firstName}
+onChange={(e) => setFirstName(e.target.value)}
 />
 <input
-type="lastName"
+type="text"
 placeholder="Last_Name" 
-value={email}
-onChange={(e) => setName(e.target.value)}
+value={lastName}
+onChange={(e) => setLastName(e.target.value)}
 />
 <input
 type="email"
