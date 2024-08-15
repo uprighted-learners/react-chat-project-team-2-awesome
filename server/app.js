@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const userRoutes = require("./routes/users");
 const roomRoutes = require("./routes/rooms");
 const messageRoutes = require("./routes/messages");
+const cors = require ("cors")
 
 
 
@@ -12,7 +13,7 @@ const app = express();
 
 // Middleware
 app.use(express.json());
-
+app.use(cors())
 // Routes
 app.use("/users", userRoutes);
 app.use("/rooms", roomRoutes);

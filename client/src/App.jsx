@@ -18,12 +18,13 @@ const App = () => {
 //Conditional rendering 
   return (
     <div className="App">
-      {token ? (
+      {!token ? (
         <Auth setToken={setToken} />
       ) : (
         <>
-          <Room setSelectedRoom={setSelectedRoom} />
-          {selectedRoom && <Room room={selectedRoom} />}
+        Display Rooms
+
+          {/* <Room setSelectedRoom={setSelectedRoom} /> */}
         </>
       )}
     </div>

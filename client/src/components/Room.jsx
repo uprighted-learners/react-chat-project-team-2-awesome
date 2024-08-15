@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 const Room = ({ room }) => {
+  console.log(room)
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [loading, setLoading] = useState(true);
