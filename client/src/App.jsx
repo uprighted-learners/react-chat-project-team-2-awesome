@@ -17,11 +17,17 @@ const App = () => {
   //Conditional rendering
   return (
     <div className="App">
-      {token ? (
+      {!token ? (
         <Auth setToken={setToken} />
       ) : (
         <>
+<<<<<<< HEAD
           <Room setSelectedRoom={setSelectedRoom} />
+=======
+        Display Rooms
+
+          {/* <Room setSelectedRoom={setSelectedRoom} /> */}
+>>>>>>> 36afd827b40f5fbecf588c8b86a41c47c4646b65
         </>
       )}
     </div>
