@@ -7,6 +7,7 @@ import DisplayRoom from "./components/DisplayRoom";
 const App = () => {
   const [token, setToken] = useState(localStorage.getItem("token") || ""); //state to store the authentication token retrieved from `localStorage`
   const [selectedRoom, setSelectedRoom] = useState(null); //function to update selected room
+  
 
   //Updates local storage when token changes
   useEffect(() => {
