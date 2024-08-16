@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react"; //useState intializes `token` state with value from `localStorage`, UseEffect updates `localStorage` with the new value
 import Auth from "./components/Auth"; //user authentication
 import Room from "./components/Room"; // for interacting with selected room
+import DisplayRoom from "./components/DisplayRoom";
 
 //functional react component to render different components based on the state
 const App = () => {
@@ -21,13 +22,7 @@ const App = () => {
         <Auth setToken={setToken} />
       ) : (
         <>
-<<<<<<< HEAD
-          <Room setSelectedRoom={setSelectedRoom} />
-=======
-        Display Rooms
-
-          {/* <Room setSelectedRoom={setSelectedRoom} /> */}
->>>>>>> 36afd827b40f5fbecf588c8b86a41c47c4646b65
+          <DisplayRoom />
         </>
       )}
     </div>
