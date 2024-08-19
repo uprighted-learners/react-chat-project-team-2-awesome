@@ -10,6 +10,11 @@ const App = () => {
   
 
   //Updates local storage when token changes
+  const logout =  () =>{
+    localStorage.clear() 
+    setToken("")
+  }
+
   useEffect(() => {
     if (token) {
       localStorage.setItem("token", token);
@@ -23,6 +28,8 @@ const App = () => {
         <Auth setToken={setToken} />
       ) : (
         <>
+  
+        <button onClick={() =>logout()}>Logout</button>
           <DisplayRoom />
         </>
       )}
