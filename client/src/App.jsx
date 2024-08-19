@@ -7,13 +7,12 @@ import DisplayRoom from "./components/DisplayRoom";
 const App = () => {
   const [token, setToken] = useState(localStorage.getItem("token") || ""); //state to store the authentication token retrieved from `localStorage`
   const [selectedRoom, setSelectedRoom] = useState(null); //function to update selected room
-  
 
   //Updates local storage when token changes
-  const logout =  () =>{
-    localStorage.clear() 
-    setToken("")
-  }
+  const logout = () => {
+    localStorage.clear();
+    setToken("");
+  };
 
   useEffect(() => {
     if (token) {
@@ -24,13 +23,18 @@ const App = () => {
   //Conditional rendering
   return (
     <div className="App">
+      <p>{selectedRoom && selectedRoom.name}</p>
       {!token ? (
         <Auth setToken={setToken} />
       ) : (
         <>
-  
-        <button onClick={() =>logout()}>Logout</button>
-          <DisplayRoom />
+          <button onClick={() => logout()}>Logout</button>
+          <DisplayRoom setSelectedRoom={setSelectedRoom} />
+          {selectedRoom ? (
+            <Room selectedRoom={selectedRoom} />
+          ) : (
+            <h3>Please select a room.</h3>
+          )}
         </>
       )}
     </div>
