@@ -9,21 +9,21 @@ const Auth = ({ setToken }) => {
 
   const handleAuth = async () => {
     const endpoint = isRegister ? "/create" : "/login";
-    const response = await fetch(`http://localhost:5000/users${endpoint}`,{
-    method: 'POST',
-    headers:{'Content-Type': 'application/json'},
-    body: JSON.stringify({firstName, lastName, email, password})
+    const response = await fetch(`http://localhost:5000/users${endpoint}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ firstName, lastName, email, password }),
     });
     const data = await response.json();
-    console.log(data)
+    console.log(data);
     if (data.Token) {
       localStorage.setItem("token", data.Token);
       setToken(data.Token);
     }
-  }
+  };
 
   return (
-    <div style={{display:"flex", flexDirection:"column"}}>
+    <div style={{ display: "flex", flexDirection: "column" }}>
       <h2>{isRegister ? "Register" : "Login"}</h2>
       <input
         type="texr"
