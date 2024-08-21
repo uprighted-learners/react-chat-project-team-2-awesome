@@ -26,8 +26,8 @@ const Room = ({ selectedRoom }) => {
         if (!response.ok) throw new Error("Failed to fetch messages");
 
         const data = await response.json();
-        setMessages(data.messages);
-        setLoading(false);
+        setMessages(data);
+        setLoading(true);
       } catch (error) {
         setError("Error fetching messages");
         console.error("Error fetching messages:", error);
