@@ -33,10 +33,14 @@ router.delete("/:id", async (req, res) => {
     res.status(400).send(error);
   }
 });
-router.post("/message", async (req, res) => {
+router.post("/message/:userID", async (req, res) => {
   try {
     // Create a new message using the data from the request body
-    const newMessage = new Message(req.body);
+    const newMessage = new Message({
+      user: req.params.userID,
+      room: req.body.room,
+      body: req.body.body,
+    });
     await newMessage.save();
 
     // Send a response with the created message

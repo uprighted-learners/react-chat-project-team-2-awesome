@@ -15,9 +15,10 @@ const Auth = ({ setToken }) => {
       body: JSON.stringify({ firstName, lastName, email, password }),
     });
     const data = await response.json();
-    console.log(data);
+    console.log(data.User._id);
     if (data.Token) {
       localStorage.setItem("token", data.Token);
+      localStorage.setItem("UID", data.User._id);
       setToken(data.Token);
     }
   };
