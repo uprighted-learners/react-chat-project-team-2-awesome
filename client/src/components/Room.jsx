@@ -3,37 +3,36 @@ import InputField from "./InputField";
 import View from "./View";
 const Room = ({ selectedRoom }) => {
   const room = selectedRoom;
-  console.log(selectedRoom);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [sending, setSending] = useState(false); // To manage button state
 
-  useEffect(() => {
-    const fetchMessages = async () => {
+  const fetchMessages = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await fetch(
+        `http://localhost:5000/messages/${selectedRoom._id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      if (!response.ok) throw new Error("Failed to fetch messages");
+
+      const data = await response.json();
+      console.log(data);
+      setMessages(data);
       setLoading(true);
-      setError(null);
-      try {
-        const response = await fetch(
-          `http://localhost:5000/messages/${selectedRoom._id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
-        if (!response.ok) throw new Error("Failed to fetch messages");
-
-        const data = await response.json();
-        setMessages(data);
-        setLoading(true);
-      } catch (error) {
-        setError("Error fetching messages");
-        console.error("Error fetching messages:", error);
-      }
-    };
-
+    } catch (error) {
+      setError("Error fetching messages");
+      console.error("Error fetching messages:", error);
+    }
+  };
+  useEffect(() => {
     fetchMessages();
   }, [room._id]); // Only refetch if room.id changes
 
@@ -44,20 +43,22 @@ const Room = ({ selectedRoom }) => {
 
     try {
       const response = await fetch(
-        `http://localhost:9000/rooms/${room.id}/messages`,
+        `http://localhost:5000/messages/message/${localStorage.getItem("UID")}`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-          body: JSON.stringify({ content: newMessage }),
+          body: JSON.stringify({ room: selectedRoom._id, body: newMessage }),
         }
       );
       if (!response.ok) throw new Error("Failed to send message");
 
       const data = await response.json();
-      setMessages((prevMessages) => [...prevMessages, data.message]);
+      fetchMessages();
+      console.log(data);
+      // setMessages((prevMessages) => [...prevMessages, data.message]);
       setNewMessage("");
     } catch (error) {
       setError("Error sending message");
@@ -77,7 +78,12 @@ const Room = ({ selectedRoom }) => {
         ) : error ? (
           <div>{error}</div>
         ) : (
-          messages.map((message) => <div key={message._id}>{message.body}</div>)
+          messages.map((message) => (
+            <div key={message._id}>
+              <p>{message.body}</p>
+              <h5>User:{message?.user?.firstName}</h5>
+            </div>
+          ))
         )}
       </div>
       <div className="message-input">
