@@ -139,37 +139,12 @@ const Room = ({ selectedRoom }) => {
         ) : (
           messages.map((message) => (
             <div key={message._id}>
-              {editMessageId === message._id ? (
-                <div>
-                  <input
-                    type="text"
-                    value={editMessageContent}
-                    onChange={(e) => setEditMessageContent(e.target.value)}
-                  />
-                  <button onClick={updateMessage}>Save</button>
-                  <button onClick={() => setEditMessageId(null)}>Cancel</button>
-                </div>
-              ) : (
-                <div>
                   <p>{message.body}</p>
                   <h5>User:{message?.user?.firstName}</h5>
-                  {(message.user?.username === localStorage.getitem("username") ||
-                    localStorage.getItem("isAdmin") === "true") && (
-                    <div>
-                      <button onClick={() => handleEditClick(message)}>
-                        Edit
-                     </button>
-                      <button onClick={() => deleteMessage(message._id)}>
-                        Delete
-                      </button>
                     </div>
-                  )}
+                  ))
+                )}
                 </div>
-              )}
-            </div>
-          ))
-        )}
-      </div>
       <div className="message-input">
         <input
           type="text"
