@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import InputField from "./InputField";
 import View from "./View";
+import '../App.css';
+
 const Room = ({ selectedRoom }) => {
   const room = selectedRoom;
   const [messages, setMessages] = useState([]);
@@ -8,10 +10,14 @@ const Room = ({ selectedRoom }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [sending, setSending] = useState(false); // To manage button state
+  const [editMessageId, setEditMessageId] = useState(null);
+  const [editMessageContent, setEditMessageContent] = useState("");
 
+  //Fetch messages
   const fetchMessages = async () => {
     setLoading(true);
     setError(null);
+
     try {
       const response = await fetch(
         `http://localhost:5000/messages/${selectedRoom._id}`,
@@ -32,10 +38,12 @@ const Room = ({ selectedRoom }) => {
       console.error("Error fetching messages:", error);
     }
   };
+
   useEffect(() => {
     fetchMessages();
   }, [room._id]); // Only refetch if room.id changes
 
+  //Send message to the server
   const sendMessage = async () => {
     if (!newMessage.trim()) return; //Prevent sending empty messages
 
@@ -53,12 +61,12 @@ const Room = ({ selectedRoom }) => {
           body: JSON.stringify({ room: selectedRoom._id, body: newMessage }),
         }
       );
+
       if (!response.ok) throw new Error("Failed to send message");
 
       const data = await response.json();
-      fetchMessages();
+      fetchMessages(); //Refresh messages
       console.log(data);
-      // setMessages((prevMessages) => [...prevMessages, data.message]);
       setNewMessage("");
     } catch (error) {
       setError("Error sending message");
@@ -66,6 +74,57 @@ const Room = ({ selectedRoom }) => {
     } finally {
       setSending(false);
     }
+  };
+
+  const deleteMessage = async (messageId) => {
+    const isAdmin = localStorage.getItem("isAdmin") === "true"; // Check if user is admin
+
+    try {
+      const response = await fetch(
+        `http://localhost:5000/rooms/${room.id}/messages/${messageId}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      if (!response.ok) throw new Error("Failed to delete message");
+    } catch (error) {
+      setError("Error deleting messages");
+      console.error("Error deleting messages:", error);
+    }
+  };
+
+  const updateMessage = async () => {
+    if (!editMessageContent.trim()) return;
+
+    try {
+      const response = await fetch(
+        `http://localhost:5000/rooms/${room.id}/messages/${editMessageId}`,
+        {
+          method: "Put",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify({ body: editMessageContent }),
+        }
+      );
+
+      if (!response.ok) throw new Error("Failed to update message");
+      setEditMessageId(null);
+      setEditMessageContent("");
+    } catch (error) {
+      setError("Error updating message");
+      console.error("Error updating message:", error);
+    }
+  };
+
+  const handleEditClick = (message) => {
+    setEditMessageId(message._id);
+    setEditMessageContent(message.body);
   };
 
   return (
@@ -80,8 +139,33 @@ const Room = ({ selectedRoom }) => {
         ) : (
           messages.map((message) => (
             <div key={message._id}>
-              <p>{message.body}</p>
-              <h5>User:{message?.user?.firstName}</h5>
+              {editMessageId === message._id ? (
+                <div>
+                  <input
+                    type="text"
+                    value={editMessageContent}
+                    onChange={(e) => setEditMessageContent(e.target.value)}
+                  />
+                  <button onClick={updateMessage}>Save</button>
+                  <button onClick={() => setEditMessageId(null)}>Cancel</button>
+                </div>
+              ) : (
+                <div>
+                  <p>{message.body}</p>
+                  <h5>User:{message?.user?.firstName}</h5>
+                  {(message.user?.username === localStorage.getitem("username") ||
+                    localStorage.getItem("isAdmin") === "true") && (
+                    <div>
+                      <button onClick={() => handleEditClick(message)}>
+                        Edit
+                     </button>
+                      <button onClick={() => deleteMessage(message._id)}>
+                        Delete
+                      </button>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           ))
         )}
