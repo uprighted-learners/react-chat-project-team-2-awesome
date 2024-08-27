@@ -13,7 +13,7 @@ const App = () => {
     localStorage.clear();
     setToken("");
   };
-
+  //Creating the State UseEffect
   useEffect(() => {
     if (token) {
       localStorage.setItem("token", token);
